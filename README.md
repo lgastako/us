@@ -1,3 +1,10 @@
+
+usbot aka structbot is an experiment in trying to expose input of raw facts to
+a datomic/core.logic combo in a ui that was easy enough for anyone to use,
+powerful enough to build a planetary-scale amoral a.i.
+
+======================================================================
+
 # us
 
 together, we are an a.i.
