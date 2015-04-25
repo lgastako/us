@@ -1,26 +1,32 @@
 (ns asp.browser
-  (:require [dommy.core :refer [listen! unlisten!] :refer-macros [sel1]]))
+  (:require [dommy.core :refer [listen! unlisten!] :refer-macros [sel1]]
+            [its.log :as log]))
 
 (def ^:dynamic *storage* js/localStorage)
 
-(def get-item [k]
-  (.getItem *storage* k))
+(def spit str)
 
-(def set-item! [k v]
-  (.setItem *storage* k v)
+(defn get-item [k]
+  (log/debug :get-item {:k k})
+  (.getItem *storage* (spit k)))
+
+(defn set-item! [k v]
+  (.setItem *storage* (spit k) (spit v))
   [k v])
 
-(def remove-item! [k]
-  (.removeItem *storage* k v))
+(defn remove-item! [k]
+  (.removeItem *storage* (spit k)))
 
-(def clear []
+(defn clear []
   (.clear *storage*))
 
-(defn restore [state-atom]
-  (-> :saved-game
-      get-item
-      #(when %
-         (reset! *storage* %))))
+;; (defn restore []
+;;   (-> :saved-game
+;;       get-item
+;;       #(when %
+;;          (->> %
+;;               spit
+;;               (reset! *storage*)))))
 
 (defn auto-save [state-atom]
   (add-watch state-atom
@@ -28,13 +34,13 @@
                (when-not (= o n)
                  (set-item! :saved-game (str n))))))
 
-(defn auto-load [state-atom]
-  (listen! js/window :storage
-           (fn [e]
-             (-> e
-                 .-newValue
-                 cljs.reader/read-string
-                 #(reset! state-atom %)))))
+;; (defn auto-load [state-atom]
+;;   (listen! js/window :storage
+;;            (fn [e]
+;;              (-> e
+;;                  .-newValue
+;;                  cljs.reader/read-string
+;;                  #(reset! state-atom %)))))
 
 (defn sync [state-atom]
   (restore state-atom)

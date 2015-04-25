@@ -16,6 +16,7 @@
                  [http-kit "2.1.19"]
                  [hiccups "0.3.0"]
                  [its-log "0.2.2" :exclusions [org.clojure/clojure]]
+                 [leiningen "2.5.1"]
                  [om "0.8.0-rc1"]
                  [omdev "0.1.3-SNAPSHOT"]
                  [org.clojure/clojure "1.6.0"]
