@@ -8,7 +8,12 @@
 (log/set-level! :debug)
 (log/debug :us.app :begin)
 
-(defonce app-state (atom {:text "Hello."}))
+(defonce app-state (atom {:event-stream [{:event-type :msg
+                                          :msg "Hello."
+                                          :from "usbot"}
+                                         {:event-type :msg
+                                          :msg "What's up?"
+                                          :from "john"}]}))
 
 (def prevent-default #(.preventDefault %))
 
@@ -22,17 +27,26 @@
           (catch js/Error ex))
         nil))))
 
-(defcomponentk main-view [[:data text :as data]]
-  (render [_]
-          (log/debug :main-view/render)
-          (html
-           [:div.main
-            [:h1
-             {:on-click (only #(om/update! data :text "Welcome."))}
-             text]])))
+(defcomponentk msg-event-view [[:data msg from]]
+  (render [_] (html [:div.event.msg [:div.from from] msg])))
+
+(defcomponentk missing-event-view [[:data type]]
+  (render [_] (html [:div.event.missing
+                     (str "Missing view for event type '" type "'.")])))
+
+(defcomponentk event-view [[:data event-type :as event]]
+  (render [_] (let [sub-view (case event-type
+                               :msg msg-event-view
+                               missing-event-view)]
+                (html [:li (om/build sub-view event)]))))
+
+(defcomponentk main-view [[:data event-stream :as data]]
+  (render [_] (html [:div.main
+                     [:h1 "usbot"]
+                     [:div.event-stream
+                      [:ul (om/build-all event-view event-stream)]]])))
 
 (defn init []
-  (log/debug :us.app/init)
   (->> "container"
        js/document.getElementById
        (conj [] :target)

@@ -3,8 +3,14 @@
             [garden.stylesheet :refer [rule]]))
 
 (defstyles screen
-  (let [body (rule :body)]
-    (body
-     {:font-family "Helvetica Neue"
-      :font-size   "16px"
-      :line-height 1.5})))
+  [:body {:font-family "Helvetica Neue"
+          :font-size   "16px"
+          :line-height 1.5}]
+
+  [:.event-stream [:li {:list-style-type "none"}]]
+
+  [:.event.msg [:.from {:font-weight "bold"
+                        :margin-right "1em"
+                        :float "left"
+                        :text-align "right"
+                        :width "10em"}]])
