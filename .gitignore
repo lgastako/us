@@ -13,3 +13,4 @@ pom.xml.asc
 .divshot-cache/
 divshot-debug.log
 .nrepl-history
+.nrepl-port
