@@ -6,14 +6,15 @@
             [om-tools.core :refer-macros [defcomponent]]
             [sablono.core :as html :refer-macros [html]]
             [us.browser :as browser]
+            [us.infra :as us :refer-macros [defcomp]]
             [us.schemas :refer [make-our-state]]))
 
 (defonce our-state (make-our-state))
 
 (browser/sync our-state)
 
-(defcomponentk main-view [data owner]
-  (render [_] (html [:div#main "us"])))
+(defcomp main-view [data owner]
+  (render [_] (html [:div.main "Hello"])))
 
 (defn main []
-  (om/root main-view app-state {:target (sel1 :#app)}))
+  (om/root main-view our-state {:target (sel1 :#app)}))

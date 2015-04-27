@@ -30,6 +30,7 @@
 
 (defn auto-save [state-atom]
   (add-watch state-atom
+             :saved-game
              (fn [_ _ o n]
                (when-not (= o n)
                  (set-item! :saved-game (str n))))))

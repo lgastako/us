@@ -2,7 +2,7 @@ all:
 	@cat Makefile
 
 t:
-	lein test
+	lein spec -a
 
 ts:
 	lein cljsbuild auto test

@@ -1,12 +1,13 @@
 (ns us.dev
-  (:require [environ.core :refer [env]]
-            [net.cgrand.enlive-html :refer [set-attr prepend append html]]
-            [cemerick.piggieback :as piggieback]
-            [weasel.repl.websocket :as weasel]
+  (:require [cemerick.piggieback :as piggieback]
+            [clojurescript-build.auto :as auto]
+            [clojure.java.shell :refer [sh]]
+            [environ.core :refer [env]]
             [figwheel-sidecar.auto-builder :as fig-auto]
             [figwheel-sidecar.core :as fig]
-            [clojurescript-build.auto :as auto]
-            [clojure.java.shell :refer [sh]]))
+            [leiningen.core :as lein]
+            [net.cgrand.enlive-html :refer [set-attr prepend append html]]
+            [weasel.repl.websocket :as weasel]))
 
 (def is-dev? (env :is-dev))
 
@@ -20,7 +21,8 @@
 (defn browser-repl []
   (let [repl-env (weasel/repl-env :ip "0.0.0.0" :port 9001)]
     (piggieback/cljs-repl :repl-env repl-env)
-    (piggieback/cljs-eval repl-env '(in-ns 'us.core) {})))
+;;    (piggieback/cljs-eval repl-env '(in-ns 'us.core) {})
+    ))
 
 (defn start-figwheel []
   (let [server (fig/start-server { :css-dirs ["resources/public/css"] })
