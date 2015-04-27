@@ -10,14 +10,18 @@
                                                 org.clojure/clojure
                                                 org.clojure/clojurescript]]
                  [org.omcljs/om "0.8.6"]
-                 [pandeiro/boot-http    "0.6.1"      :scope "test"]])
+                 [pandeiro/boot-http    "0.6.1"      :scope "test"]
+                 [prismatic/om-tools "0.3.11"]
+                 [prismatic/schema "0.4.1"]
+                 [sablono "0.3.4"]])
 
 (require
  '[adzerk.boot-cljs      :refer [cljs]]
  '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
  '[adzerk.boot-reload    :refer [reload]]
- '[pandeiro.boot-http    :refer [serve]]
- '[boot-garden.core    :refer [garden]])
+ '[boot-garden.core    :refer [garden]]
+ '[deraen.boot-cljx      :refer :all]
+ '[pandeiro.boot-http    :refer [serve]])
 
 (deftask build []
   (comp (speak)
@@ -26,11 +30,14 @@
         (cljs)
 
         (garden :styles-var 'us.styles/screen
-                :output-to "css/garden.css")))
+                :output-to "css/garden.css")
+        (garden :styles-var 'us.styles/screen
+                :output-to "../resources/css/garden.css")))
 
 (deftask run []
   (comp (serve)
         (watch)
+        (cljx)
         (cljs-repl)
         (reload)
         (build)))

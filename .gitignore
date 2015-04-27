@@ -12,3 +12,4 @@ pom.xml.asc
 /.repl
 .divshot-cache/
 divshot-debug.log
+.nrepl-history
