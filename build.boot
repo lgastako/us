@@ -1,12 +1,16 @@
 (set-env!
- :source-paths    #{"src/cljs" "src/clj"}
+ :source-paths    #{"src/cljx" "src/cljs" "src/clj"}
  :resource-paths  #{"resources"}
  :dependencies '[[adzerk/boot-cljs      "0.0-2814-4" :scope "test"]
                  [adzerk/boot-cljs-repl "0.1.9"      :scope "test"]
                  [adzerk/boot-reload    "0.2.4"      :scope "test"]
-                 [pandeiro/boot-http    "0.6.1"      :scope "test"]
+                 [boot-garden "1.2.5-1" :scope "test"]
+                 [deraen/boot-cljx "0.2.2"]
+                 [its-log "0.2.2"` :exclusions [com.keminglabs/cljx
+                                                org.clojure/clojure
+                                                org.clojure/clojurescript]]
                  [org.omcljs/om "0.8.6"]
-                 [boot-garden "1.2.5-1" :scope "test"]])
+                 [pandeiro/boot-http    "0.6.1"      :scope "test"]])
 
 (require
  '[adzerk.boot-cljs      :refer [cljs]]
@@ -17,11 +21,12 @@
 
 (deftask build []
   (comp (speak)
-        
+
+        (cljx)
         (cljs)
-        
+
         (garden :styles-var 'us.styles/screen
-:output-to "css/garden.css")))
+                :output-to "css/garden.css")))
 
 (deftask run []
   (comp (serve)
@@ -36,7 +41,7 @@
                        ;; https://github.com/martinklepsch/pseudo-names-error
                        ;; hopefully fixed soon
                        :pseudo-names true}
-                      garden {:pretty-print false})
+                 garden {:pretty-print false})
   identity)
 
 (deftask development []
